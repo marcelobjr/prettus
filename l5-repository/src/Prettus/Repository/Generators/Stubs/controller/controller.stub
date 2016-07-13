@@ -1,0 +1,126 @@
+<?php
+
+$NAMESPACE$
+
+use Illuminate\Http\Request;
+
+use $APPNAME$Http\Requests;
+use Prettus\Validator\Contracts\ValidatorInterface;
+use Prettus\Validator\Exceptions\ValidatorException;
+use $APPNAME$Http\Requests\$CLASS$CreateRequest;
+use $APPNAME$Http\Requests\$CLASS$UpdateRequest;
+$REPOSITORY$
+$VALIDATOR$
+
+
+class $CONTROLLER$Controller extends Controller
+{
+
+    /**
+     * @var $CLASS$Service
+     */
+    protected $service;
+
+    /**
+     * @var $CLASS$Validator
+     */
+    protected $validator;
+
+    public function __construct($CLASS$Service $service, $CLASS$Validator $validator)
+    {
+        $this->service = $service;
+        $this->validator  = $validator;
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $limit = $request->query->get('limit', 15);
+        return $this->service->all($limit);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  $CLASS$CreateRequest $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+
+        try {
+
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+
+            return $this->service->create($request->all());
+
+        } catch (ValidatorException $e) {
+            
+                return response()->json([
+                    'error'   => true,
+                    'message' => $e->getMessageBag()
+                ]);
+            
+        }
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        return $this->service->find($id);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  $CLASS$UpdateRequest $request
+     * @param  string            $id
+     *
+     * @return Response
+     */
+    public function update($CLASS$UpdateRequest $request, $id)
+    {
+
+        try {
+
+            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
+
+            return $this->service->update($request->all(), $id);
+
+        } catch (ValidatorException $e) {
+
+            return response()->json([
+                    'error'   => true,
+                    'message' => $e->getMessageBag()
+                ]);
+            
+        }
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        return $this->service->delete($id);
+    }
+}

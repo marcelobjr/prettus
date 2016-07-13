@@ -1,0 +1,52 @@
+<?php
+
+$NAMESPACE$
+
+use Prettus\Repository\Eloquent\BaseRepository;
+use Prettus\Repository\Criteria\RequestCriteria;
+use $REPOSITORY$
+use $MODEL$;
+$USE_VALIDATOR$
+
+/**
+ * Class $CLASS$RepositoryEloquent
+ * @package $NAMESPACE$
+ */
+class $CLASS$RepositoryEloquent extends BaseRepository implements $CLASS$Repository
+{
+
+   /**
+    * @var array
+    * http://prettus.local/users?search=John&searchFields=name:like
+    * http://prettus.local/users?filter=id;name
+    */
+    //protected $fieldSearchable = ['nome','email'];
+
+    /**
+     * Specify Model class name
+     *
+     * @return string
+     */
+    public function model()
+    {
+        return $CLASS$::class;
+    }
+
+    $VALIDATOR$
+
+    /**
+     * Boot up the repository, pushing criteria
+     */
+    public function boot()
+    {
+        $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    /**
+     * @return $CLASS$Presenter
+     */
+    public function presenter()
+    {
+        //return \App\Presenters\$CLASS$Presenter::class;
+    }
+}

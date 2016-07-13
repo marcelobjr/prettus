@@ -1,0 +1,138 @@
+<?php
+
+$NAMESPACE$
+
+use Illuminate\Http\Request;
+
+use $APPNAME$Http\Requests;
+use Prettus\Validator\Contracts\ValidatorInterface;
+use Prettus\Validator\Exceptions\ValidatorException;
+use $APPNAME$Http\Requests\$CLASS$CreateRequest;
+use $APPNAME$Http\Requests\$CLASS$UpdateRequest;
+$REPOSITORY$
+
+
+
+class $CONTROLLER$Service 
+{
+
+    /**
+     * @var $CLASS$Repository
+     */
+    protected $repository;
+
+    public function __construct($CLASS$Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all($limit)
+    {
+        try {
+        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
+            return $this->repository->paginate($limit);
+        } catch (\Exception $e) {
+            return [
+                "error" => true,
+                "message" => $e->getMessage()
+            ];
+        }
+    }
+    
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  array $data
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(array $data)
+    {
+
+        try {
+
+            return $this->repository->create($data);
+
+        } catch (Exception $e) {
+            return [
+                'error'     => true,
+                'message'   => $e->getMessageBag()
+            ];
+        }
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function find($id)
+    {
+        try {
+            return $this->repository->find($id);
+        } catch (\Exception $e) {
+            return [
+                "error" => true,
+                "message" => $e->getMessage()
+            ];
+        }
+    }
+
+
+    
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  $CLASS$UpdateRequest $request
+     * @param  string            $id
+     *
+     * @return Response
+     */
+    public function update(array $data, $id)
+    {
+        try {
+            //$this->validator->with($data)->passesOrFail();
+            return $this->repository->update($data, $id);
+
+        } catch (ValidatorException $e) {
+            return [
+                'error'     => true,
+                'message'   => $e->getMessageBag()
+            ];
+        }
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        try {
+            // $this->repository->find($id)->projects()->delete();
+            $this->repository->delete($id);
+
+            return ['error' => false];
+
+        } catch (\Exception $e) {
+            return [
+                "error" => true,
+                "message" => $e->getMessage()
+            ];
+        }
+    }
+}
