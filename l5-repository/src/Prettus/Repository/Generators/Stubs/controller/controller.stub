@@ -92,7 +92,7 @@ class $CONTROLLER$Controller extends Controller
      *
      * @return Response
      */
-    public function update($CLASS$UpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
 
         try {
