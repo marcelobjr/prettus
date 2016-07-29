@@ -49,13 +49,13 @@ class PresenterCommand extends Command
             $this->info("Presenter created successfully.");
 
             if (!\File::exists(app_path() . '/Transformers/' . $this->argument('name') . 'Transformer.php')) {
-                if ($this->confirm('Would you like to create a Transformer? [y|N]')) {
+                //if ($this->confirm('Would you like to create a Transformer? [y|N]')) {
                     (new TransformerGenerator([
                         'name'  => $this->argument('name'),
                         'force' => $this->option('force'),
                     ]))->run();
                     $this->info("Transformer created successfully.");
-                }
+                //}
             }
         } catch (FileAlreadyExistsException $e) {
             $this->error($this->type . ' already exists!');
