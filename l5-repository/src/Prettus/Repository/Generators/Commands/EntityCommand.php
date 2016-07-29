@@ -37,17 +37,17 @@ class EntityCommand extends Command
     public function fire()
     {
 
-        if ($this->confirm('Would you like to create a Presenter? [y|N]')) {
+        //if ($this->confirm('Would you like to create a Presenter? [y|N]')) {
             $this->call('make:presenter', [
                 'name'    => $this->argument('name'),
                 '--force' => $this->option('force'),
             ]);
-        }
+        //}
 
         $validator = $this->option('validator');
-        if (is_null($validator) && $this->confirm('Would you like to create a Validator? [y|N]')) {
+        //if (is_null($validator) && $this->confirm('Would you like to create a Validator? [y|N]')) {
             $validator = 'yes';
-        }
+        //}
 
         if ($validator == 'yes') {
             $this->call('make:validator', [
@@ -57,23 +57,23 @@ class EntityCommand extends Command
             ]);
         }
 
-        if ($this->confirm('Would you like to create a Controller? [y|N]')) {
+        //if ($this->confirm('Would you like to create a Controller? [y|N]')) {
 
             // Generate a controller resource
             $this->call('make:resource', [
                 'name'    => $this->argument('name'),
                 '--force' => $this->option('force')
             ]);
-        }
+        //}
 
-        if ($this->confirm('Would you like to create a Service? [y|N]')) {
+        //if ($this->confirm('Would you like to create a Service? [y|N]')) {
 
             // Generate a controller resource
             $this->call('make:service', [
                 'name'    => $this->argument('name'),
                 '--force' => $this->option('force')
             ]);
-        }
+        //}
 
         $this->call('make:repository', [
             'name'        => $this->argument('name'),
